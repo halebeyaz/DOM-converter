@@ -1,0 +1,97 @@
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <xsd:element name="departments">  <!-- root -->
+  <xsd:complexType>
+   <xsd:sequence>
+    <xsd:element name="university" minOccurs="1" maxOccurs="unbounded">  <!-- there should be at least one university -->
+     <xsd:complexType>
+      <xsd:sequence>
+       <xsd:element name="item" minOccurs="1" maxOccurs="unbounded">  <!-- there should be at least one department for each university -->
+        <xsd:complexType mixed="true">
+         <xsd:sequence> 
+          <xsd:element name="name">
+           <xsd:complexType>
+            <xsd:simpleContent>
+             <xsd:extension base="xsd:string">
+              <xsd:attribute type="langType" name="lang" use="optional"/> <!-- langType deals with restrictions of language -->
+              <xsd:attribute type="edType" name="second" use="optional"/> <!-- edType deals with restrictions of education type -->
+            </xsd:extension>
+           </xsd:simpleContent> 
+          </xsd:complexType>
+         </xsd:element>
+         <xsd:element type="xsd:integer" name="period"/>
+         <xsd:element name="quota" minOccurs="1" maxOccurs="1"> <!-- there can be only one quota --> <!-- does not check if its numeric or not -->
+          <xsd:complexType>
+           <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+             <xsd:attribute name="spec" type="specType" use="optional"/> <!-- okul birincisi kontenjanı: optional to use. specType deals with the restrictions -->
+            </xsd:extension>
+           </xsd:simpleContent>
+          </xsd:complexType>
+         </xsd:element>
+         <xsd:element type="fieldType" name="field"/> <!-- fieldType deals with restrictions of field -->
+         <xsd:element name="last_min_score" minOccurs="0" maxOccurs="1"> <!-- there can be zero or one last_min_score --> <!-- does not check if its numeric or not -->
+          <xsd:complexType>
+           <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+             <xsd:attribute type="orderType" name="order" use="optional"/> <!-- orderType deals with restrictions of order -->
+            </xsd:extension>
+           </xsd:simpleContent>
+           </xsd:complexType>
+          </xsd:element> 
+          <xsd:element type="grantType" name="grant"/> <!-- grantType deals with restrictions of grant -->
+         </xsd:sequence>
+         <xsd:attribute type="idType" name="id" use="required"/> <!-- idType deals with restrictions of id. id is required for each department -->
+         <xsd:attribute type="xsd:string" name="faculty" use="required"/> <!-- faculty name is required for each department -->
+        </xsd:complexType> 
+       </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute type="xsd:string" name="name" use="required"/> <!-- universtiy name is required for each university -->
+      <xsd:attribute type="uniType" name="uType" use="required"/> <!-- uniType deals with restrictions of uType. uType is required for each university -->
+     </xsd:complexType>
+    </xsd:element>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+  <xsd:simpleType name="orderType"> 
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="\d*|\s{0}"/> <!-- order can be empty or numeric -->
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="specType">
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="[0-9]"/> <!-- spec can be empty or integer -->
+   <xsd:pattern value =""/>
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="fieldType">
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="SAY|EA|SÖZ|DİL"/> <!-- field can be only have the values SAY EA SÖZ and DİL -->
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="grantType">
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="25|50|100|null|empty"/> <!-- grant can be empty/null OR only have the values 25 50 OR 100 -->
+   <xsd:pattern value =""/>
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="edType">
+  <xsd:restriction base ="xsd:string"> 
+   <xsd:pattern value ="iö|öö"/> <!-- education type can only have the values öö OR iö -->
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="langType">
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="en|empty"/> <!-- language can be empty OR have the value en -->
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="idType">
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="[0-9]{9}"/> <!-- id has to have 9 digits and they have to be a numeric value -->
+  </xsd:restriction>
+ </xsd:simpleType>
+ <xsd:simpleType name="uniType">
+  <xsd:restriction base ="xsd:string">
+   <xsd:pattern value ="Devlet|Vakıf"/> <!-- uni type can only have the values Devlet OR Vakıf -->
+  </xsd:restriction>
+ </xsd:simpleType>
+</xsd:schema>
